@@ -4,106 +4,111 @@ import math as m
 import numpy as np
 from scipy.optimize import fsolve
 
-#k = np.empty(7)
+k = np.empty(7)
 def systemsolver(z):
-    if psi.get() != '':
-       psie = float(psi.get())
-    else:
-        psie = ''
+    tk.Label(my_window, text='', fg='red').grid(row=8, column=1, sticky = W+E)
+    try:
+        if psi.get() != '':
+           psie = float(psi.get())
+        else:
+            psie = ''
 
-    if phi.get() != '':
-        phie = float(phi.get())
-    else:
-        phie = ''
+        if phi.get() != '':
+            phie = float(phi.get())
+        else:
+            phie = ''
 
-    if Rn.get() != '':
-        Rne = float(Rn.get())
-    else:
-        Rne = ''
+        if Rn.get() != '':
+            Rne = float(Rn.get())
+        else:
+            Rne = ''
 
-    if a1ent.get() != '':
-        av1 = float(a1ent.get())
-    else:
-        av1 = ''
+        if a1ent.get() != '':
+            av1 = float(a1ent.get())
+        else:
+            av1 = ''
 
-    if a2ent.get() != '':
-         av2= float(a2ent.get())
-    else:
-        av2 = ''
+        if a2ent.get() != '':
+             av2= float(a2ent.get())
+        else:
+            av2 = ''
 
-    if b1ent.get() != '':
-        bv1 = float(b1ent.get())
-    else:
-        bv1 = ''
+        if b1ent.get() != '':
+            bv1 = float(b1ent.get())
+        else:
+            bv1 = ''
 
-    if b2ent.get() != '':
-        bv2 = float(b2ent.get())
-    else:
-        bv2 = ''
+        if b2ent.get() != '':
+            bv2 = float(b2ent.get())
+        else:
+            bv2 = ''
 
 
 
-    i = 0
-    if psie == '':
-        psie = z[i]
-        i = i + 1
-    else:
-        pass
+        i = 0
+        if psie == '':
+            psie = z[i]
+            i = i + 1
+        else:
+            pass
 
-    if phie == '':
-        phie = z[i]
-        i = i + 1
-    else:
-        pass
+        if phie == '':
+            phie = z[i]
+            i = i + 1
+        else:
+            pass
 
-    if Rne == '':
-        Rne = z[i]
-        i = i + 1
-    else:
-        pass
+        if Rne == '':
+            Rne = z[i]
+            i = i + 1
+        else:
+            pass
 
-    if av1 == '':
-        av1 = z[i]
-        i = i + 1
-    else:
-        pass
+        if av1 == '':
+            av1 = z[i]
+            i = i + 1
+        else:
+            pass
 
-    if av2 == '':
-        av2 = z[i]
-        i = i + 1
-    else:
+        if av2 == '':
+            av2 = z[i]
+            i = i + 1
+        else:
 
-        pass
+            pass
 
-    if bv1 == '':
-        bv1 = z[i]
-        i = i + 1
-    else:
-        pass
+        if bv1 == '':
+            bv1 = z[i]
+            i = i + 1
+        else:
+            pass
 
-    if bv2 == '':
-        bv2 = z[i]
-        i = i + 1
-    else:
-        pass
+        if bv2 == '':
+            bv2 = z[i]
+            i = i + 1
+        else:
+            pass
 
-    F = np.zeros((4))
+        F = np.zeros((4))
 
-    F[0] = -av1 - np.degrees(np.arctan(-((psie / 2) - 1 + Rne) / phie))
-    F[1] = -av2 + np.degrees(np.arctan(((psie / 2)+1-Rne) / (phie)))
-    F[2] = -bv1 + np.degrees(np.arctan(((psie / 2) + Rne) / phie))
-    F[3] = -bv2 - np.degrees(np.arctan(-((psie / 2) - Rne) / phie))
-    global k
-    k = np.array([psie, phie, Rne, av1, av2, bv1, bv2])
-    return F
-
+        F[0] = -av1 - np.degrees(np.arctan(-((psie / 2) - 1 + Rne) / phie))
+        F[1] = -av2 + np.degrees(np.arctan(((psie / 2)+1-Rne) / (phie)))
+        F[2] = -bv1 + np.degrees(np.arctan(((psie / 2) + Rne) / phie))
+        F[3] = -bv2 - np.degrees(np.arctan(-((psie / 2) - Rne) / phie))
+        global k
+        k = np.array([psie, phie, Rne, av1, av2, bv1, bv2])
+        return F
+    except:
+        tk.Label(my_window, text='Triangles not found', fg='red').grid(row=8, column=1)
 def sol():
     zGuess = np.array([1, 1, 1, 1])
     z = fsolve(systemsolver,zGuess)
-    print(k)
 
 def results():
+  try:
     sol()
+
+    tk.Label(my_window, text='', fg='red').grid(row=8, column=0, sticky=W + E)
     psie = k[0]
     phie = k[1]
     Rne = k[2]
@@ -121,6 +126,8 @@ def results():
     a2text = str(round(a2, 3))
     b1text = str(round(b1, 3))
     b2text = str(round(b2, 3))
+
+    first_canvas.delete("all")
     first_canvas.create_text(60, 30, font=('Purisa', 12), text=('Results'))
 
     first_canvas.create_text(xtxt, 60, font=('Purisa', 12), text=('ψ ='))
@@ -138,54 +145,57 @@ def results():
     first_canvas.create_text(xang, 140, font=('Purisa', 12), text=(a2text))
     first_canvas.create_text(xang, 160, font=('Purisa', 12), text=(b1text))
     first_canvas.create_text(xang, 180, font=('Purisa', 12), text=(b2text))
+  except:
+      tk.Label(my_window, text='Solution not found', fg='red').grid(row=8, column=0)
 
-def turbine():
-    try:
-        psie = float(psi.get())
-        phie = float(phi.get())
-        Rne = float(Rn.get())
-        # av1 = float(a1ent.get())
-        # av2 = float(a2ent.get())
-        # bv1 = float(b1ent.get())
-        # bv2 = float(b2ent.get())
-
-        a2 = m.degrees(np.arctan(((psie / 2)+1-Rne) / (phie)))
-        a1 = -m.degrees(np.arctan(-((psie / 2) - 1 + Rne) / phie))
-        b2 = -m.degrees(np.arctan(-((psie / 2) - Rne) / phie))
-        b1 = m.degrees(np.arctan(((psie / 2) + Rne) / phie))
-
-
-        # tk.Label(my_window, text="a1=").grid(row=0, column=3)
-        # tk.Label(my_window, text="a2=").grid(row=1, column=3)
-        # tk.Label(my_window, text="b1=").grid(row=2, column=3)
-        # tk.Label(my_window, text="b2=").grid(row=3, column=3)
-
-
-        # tk.Label(my_window, text=str(round(a1,3))).grid(row=0, column=4)
-        # tk.Label(my_window, text=str(round(a2,3))).grid(row=1, column=4)
-        # tk.Label(my_window, text=str(round(b1,3))).grid(row=2, column=4)
-        # tk.Label(my_window, text=str(round(b2,3))).grid(row=3, column=4)
-        xtxt = 40
-        xang = 90
-        a1text = str(round(a1, 3))
-        a2text = str(round(a2, 3))
-        b1text = str(round(b1, 3))
-        b2text = str(round(b2, 3))
-        first_canvas.create_text(60, 30, font=('Purisa', 12), text=('Angles'))
-        first_canvas.create_text(xtxt, 60, font=('Purisa', 12), text=('a1 ='))
-        first_canvas.create_text(xtxt, 80, font=('Purisa', 12), text=('a2 ='))
-        first_canvas.create_text(xtxt, 100, font=('Purisa', 12), text=('b1 ='))
-        first_canvas.create_text(xtxt, 120, font=('Purisa', 12), text=('b2 ='))
-
-        first_canvas.create_text(xang, 60, font=('Purisa', 12), text=(a1text))
-        first_canvas.create_text(xang, 80, font=('Purisa', 12), text=(a2text))
-        first_canvas.create_text(xang, 100, font=('Purisa', 12), text=(b1text))
-        first_canvas.create_text(xang, 120, font=('Purisa', 12), text=(b2text))
-
-    except:
-        tk.Label(my_window, text='Angles not found',fg = 'red').grid(row=8, column=0)
+# def turbine():
+#     try:
+#         psie = float(psi.get())
+#         phie = float(phi.get())
+#         Rne = float(Rn.get())
+#         # av1 = float(a1ent.get())
+#         # av2 = float(a2ent.get())
+#         # bv1 = float(b1ent.get())
+#         # bv2 = float(b2ent.get())
+#
+#         a2 = m.degrees(np.arctan(((psie / 2)+1-Rne) / (phie)))
+#         a1 = -m.degrees(np.arctan(-((psie / 2) - 1 + Rne) / phie))
+#         b2 = -m.degrees(np.arctan(-((psie / 2) - Rne) / phie))
+#         b1 = m.degrees(np.arctan(((psie / 2) + Rne) / phie))
+#
+#
+#         # tk.Label(my_window, text="a1=").grid(row=0, column=3)
+#         # tk.Label(my_window, text="a2=").grid(row=1, column=3)
+#         # tk.Label(my_window, text="b1=").grid(row=2, column=3)
+#         # tk.Label(my_window, text="b2=").grid(row=3, column=3)
+#
+#
+#         # tk.Label(my_window, text=str(round(a1,3))).grid(row=0, column=4)
+#         # tk.Label(my_window, text=str(round(a2,3))).grid(row=1, column=4)
+#         # tk.Label(my_window, text=str(round(b1,3))).grid(row=2, column=4)
+#         # tk.Label(my_window, text=str(round(b2,3))).grid(row=3, column=4)
+#         xtxt = 40
+#         xang = 90
+#         a1text = str(round(a1, 3))
+#         a2text = str(round(a2, 3))
+#         b1text = str(round(b1, 3))
+#         b2text = str(round(b2, 3))
+#         first_canvas.create_text(60, 30, font=('Purisa', 12), text=('Angles'))
+#         first_canvas.create_text(xtxt, 60, font=('Purisa', 12), text=('a1 ='))
+#         first_canvas.create_text(xtxt, 80, font=('Purisa', 12), text=('a2 ='))
+#         first_canvas.create_text(xtxt, 100, font=('Purisa', 12), text=('b1 ='))
+#         first_canvas.create_text(xtxt, 120, font=('Purisa', 12), text=('b2 ='))
+#
+#         first_canvas.create_text(xang, 60, font=('Purisa', 12), text=(a1text))
+#         first_canvas.create_text(xang, 80, font=('Purisa', 12), text=(a2text))
+#         first_canvas.create_text(xang, 100, font=('Purisa', 12), text=(b1text))
+#         first_canvas.create_text(xang, 120, font=('Purisa', 12), text=(b2text))
+#
+#     except:
+#         tk.Label(my_window, text='Angles not found',fg = 'red').grid(row=8, column=0)
 
 #Function of creating a new window with triangles
+
 def create_window():
     sol()
     try:
@@ -301,6 +311,7 @@ def dml_measurements():
 
         xtxt = 40
         xang = 90
+        second_canvas.delete("all")
         second_canvas.create_text(90, 30, font=('Purisa', 12), text=('Measurements'))
         second_canvas.create_text(xtxt, 60, font=('Purisa', 12), text=('rm ='))
         second_canvas.create_text(xtxt, 80, font=('Purisa', 12), text=('rh ='))
